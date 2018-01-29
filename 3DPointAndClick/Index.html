@@ -13,6 +13,20 @@
             width: 100%;
             height: 100%
         }
+
+        .infotext {
+            position: absolute;
+            top: 10px;
+            /*width: 100%;*/
+            text-align: center;
+            z-index: 100;
+            display: block;
+            color:white;
+            left: 10px;
+        }
+        [hidden] {
+            display: none;
+        }
     </style>
     <!--  Three.js CDN  -->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>-->
@@ -21,6 +35,51 @@
 </head>
 <body>
     <!--  Our code  -->
-    <script src="Scripts/script.js"></script>
+    <script src="Scripts/GameFile.js"></script>
+    <!--<script src="Scripts/script.js"></script>-->
+    <script src="Scripts/Engine.js"></script>
+
+    <script type="text/javascript">
+        startEngine(chapter, "gameScene");
+    </script>
+
+    <div id="IntroText" class="infotext">
+        <p>
+            Rectanguloids are a species that look like rectangles.
+        </p>
+        <p>
+            There genetics are very simple and their children are always the same colour as the parent.
+        </p>
+        <p>
+            Unfortunetly, Rectanguloids are colour blind and find it hard to tell their children apart from other children.
+        </p>
+        <p>
+            Help the Rectanguloids be reunited correctly my clicking on their child.
+        </p>
+    </div>
+
+    <div id="ThatIsTheParent" class="infotext" hidden="">
+        <p>
+            That is the parent. Click on the child that matches the colour of this Rectanguloid.
+        </p>
+    </div>
+
+    <div id="ThatIsTheWrongChild" class="infotext" hidden="">
+        <p>
+            That is the wrong child.
+        </p>
+        <p>
+            You have doomed this poor family to raise the wrong child - which will eventually grow to resent it.
+        </p>
+    </div>
+
+    <div id="ThatIsTheCorrectChild" class="infotext" hidden="">
+        <p>
+            That is the correct child.
+        </p>
+        <p>
+            You have made the family whole again, and they will surely go on to have a happy life.
+        </p>
+    </div>
 </body>
 </html>

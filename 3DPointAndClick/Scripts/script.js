@@ -33,8 +33,10 @@ document.body.appendChild(renderer.domElement);
 
 
 var targetList = [];
+var parent = null;
+var correctChild = null;
 
-var createCube = function (x,y, w,h, color) {
+var createCube = function (x, y, w, h, color, parentColor) {
     var geometry = new THREE.BoxGeometry(w,h, 1);
     var material = new THREE.MeshBasicMaterial({ color: color });
     var cube = new THREE.Mesh(geometry, material);
@@ -44,16 +46,21 @@ var createCube = function (x,y, w,h, color) {
 
     targetList.push(cube);
 
+    if (color == parentColor) {
+        correctChild = cube;
+    }
+
     return cube;
 }
 
 var createLevel = function (parentColor)
 {
-    scene.add(createCube(-5, 0, 4, 8, parentColor));
+    parent = createCube(-5, 0, 4, 8, parentColor, null);
+    scene.add(parent);
 
-    scene.add(createCube(6, 3, 2, 3, "#433F81"));
-    scene.add(createCube(6, -1, 2, 3, "#F5FBEF"));
-    scene.add(createCube(6, -5, 2, 3, "#E85D75"));
+    scene.add(createCube(6, 3, 2, 3, "#433F81", parentColor));
+    scene.add(createCube(6, -1, 2, 3, "#F5FBEF", parentColor));
+    scene.add(createCube(6, -5, 2, 3, "#E85D75", parentColor));
     //scene.add(createCube(6, 0, 2, 3, "#40F99B"));
 }
 
@@ -71,6 +78,7 @@ createLevel("#433F81");
 
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
+var gameplaying = true;
 
 // when the mouse moves, call the given function
 document.addEventListener('mousedown', onDocumentMouseDown, false);
@@ -80,7 +88,7 @@ function onDocumentMouseDown(event) {
     // (such as the mouse's TrackballControls)
     // event.preventDefault();
 
-    console.log("Click.");
+    //console.log("Click.");
 
     // update the mouse variable
     //mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -90,7 +98,7 @@ function onDocumentMouseDown(event) {
     mouse.y = - ((event.clientY - renderer.domElement.offsetTop) / renderer.domElement.clientHeight) * 2 + 1;
 
 
-    console.log(mouse.x + ',' + mouse.y);
+    //console.log(mouse.x + ',' + mouse.y);
 
     raycaster.setFromCamera(mouse, camera);
 
@@ -102,7 +110,28 @@ function onDocumentMouseDown(event) {
 
     for (var i = 0; i < intersects.length; i++) {
 
-        intersects[i].object.material.color.set(0xff0000);
+        document.getElementById("IntroText").hidden = true;
+        document.getElementById("ThatIsTheParent").hidden = true;
+        document.getElementById("ThatIsTheWrongChild").hidden = true;
+        document.getElementById("ThatIsTheCorrectChild").hidden = true;
+        
+
+        if (intersects[i].object == parent) {
+            document.getElementById("ThatIsTheParent").hidden = false;
+            //intersects[i].object.material.color.set(0xffffff);
+        }
+        else if (intersects[i].object == correctChild)
+        {
+            document.getElementById("ThatIsTheCorrectChild").hidden = false;
+            //intersects[i].object.material.color.set(0x0000ff);
+            gameplaying = false;
+        }
+        else {
+            //intersects[i].object.material.color.set(0xff0000);
+            document.getElementById("ThatIsTheWrongChild").hidden = false;  
+            gameplaying = false;
+        }
+        
 
     }
 
@@ -142,7 +171,13 @@ var render = function () {
     //cube.rotation.y += 0.01;
 
     // Render the scene
-    renderer.render(currentScene, camera);
+    console.log(gameplaying);
+    if (gameplaying == true) {
+        renderer.render(currentScene, camera);
+    }
+    else {
+        renderer.render(new THREE.Scene(), camera);
+    }
 };
 
 
