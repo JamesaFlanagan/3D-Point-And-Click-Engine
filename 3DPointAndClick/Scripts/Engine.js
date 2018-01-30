@@ -1,8 +1,9 @@
 ﻿var sceneList = [];
 var currentScene = null;
+var renderer = null;
+var camera = null;
 
-
-var startEngine = new function (gameData, startScene) {
+var startEngine = function (gameData, startScene) {
     
     for (var i = 0; i < gameData.scenes.length; i++) {
 
@@ -13,10 +14,10 @@ var startEngine = new function (gameData, startScene) {
     }   
 
 
-    var camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 1, 1000);
+    camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 1, 1000);
     camera.position.z = 4;
 
-    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setClearColor("#000000");
     renderer.setSize(window.innerHeight, window.innerHeight);
 
@@ -25,9 +26,9 @@ var startEngine = new function (gameData, startScene) {
     render();
 }
 
-var loadScene = new function (sceneData) {
+var loadScene = function (sceneData) {
 
-    var scene = new Three.Scene();
+    var scene = new THREE.Scene();
     scene.objectList = [];
     scene.name = sceneData.name;
 
@@ -35,13 +36,16 @@ var loadScene = new function (sceneData) {
     {
         var objData = sceneData.objects[i]
 
-        scene.objectList.push(createObject(objData));
+        var obj = createObject(objData);
+
+        scene.add(obj);
+        scene.objectList.push(obj);
     }
 
     return scene;
 }
 
-var createObject = new function (objectData) {
+var createObject = function (objectData) {
 
     if (objectData.type == "square") {
         return createCube(objectData.x, objectData.y, 1, objectData.w, objectData.h, 1, objectData.color);
