@@ -34,7 +34,7 @@ var startEngine = function (gameData, startScene, newDisplayTextContainer) {
     //camera.lookAt(currentScene.currentText.position);
 
     swapToScene(currentScene);
-
+    
     render();
 }
 
@@ -49,7 +49,6 @@ var swapToScene = function (scene) {
             processAction(action, scene);
         }
     }
-
 }
 
 var loadScene = function (sceneData) {
@@ -68,17 +67,22 @@ var loadScene = function (sceneData) {
         scene.add(obj);
         scene.objectList.push(obj);
     }
-    
+
+    sceneList.push(scene);
     return scene;
 }
 
 var createObject = function (objectData) {
 
+    var item = null;
+
     if (objectData.type == "square") {
-        return createCube(objectData.x, objectData.y, 1, objectData.w, objectData.h, 1, objectData.color);
+        item = createCube(objectData.x, objectData.y, 1, objectData.w, objectData.h, 1, objectData.color);
     }
 
-    return null;
+    item.name = objectData.name;
+
+    return item;
 }
 
 var createCube = function (x, y, z, w, h, d, color, parentColor) {
@@ -115,6 +119,18 @@ var processAction = function (action, scene) {
                 displayTextContainer.innerText = action.targetParams[0];
                 break;
             }
+        case "changeScene":
+            {
+                var targetSceneName = action.targetParams[0];
+                for (var i = 0; i < sceneList.length; ++i) {
+                    var targetScene = sceneList[i];
+
+                    if (targetScene.name == targetSceneName) {
+                        swapToScene(targetScene);
+                    }
+                }
+                break;
+            }
         default:
             {
                 break;
@@ -133,6 +149,19 @@ function onDocumentMouseDown(event) {
     var intersects = raycaster.intersectObjects(currentScene.children);
 
     for (var i = 0; i < intersects.length; i++) {
+
+        var item = intersects[i].object;
+        
+        for(var i = 0; i < currentScene.actionList.length; i++) {
+
+            var action = currentScene.actionList[i];
+
+            if (action.source == item.name && action.sourceaction == "choose") {
+                processAction(action, currentScene);
+            }
+        }
+
+
 
         //document.getElementById("IntroText").hidden = true;
         //document.getElementById("ThatIsTheParent").hidden = true;
