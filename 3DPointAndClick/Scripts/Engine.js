@@ -1,8 +1,12 @@
-﻿var sceneList = [];
+﻿//TODO - Make this an Engine object where these things can be set and adjusted etc.
+
+var sceneList = [];
 var currentScene = null;
-var renderer = null;
-var camera = null;
+var renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setClearColor("#000000");
+var camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 1, 1000); camera.position.z = 4;
 var displayTextContainer = null;
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
 
 var startEngine = function (gameData, startScene, newDisplayTextContainer) {
 
@@ -17,17 +21,14 @@ var startEngine = function (gameData, startScene, newDisplayTextContainer) {
         if (newScene.name == startScene) {
             currentScene = newScene;
         }
-    }
-
-    camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 1, 1000);
-    camera.position.z = 4;
-
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setClearColor("#000000");
+    }    
+    
     renderer.setSize(window.innerHeight, window.innerHeight);    
     displayTextContainer.style.width = renderer.getSize().width;
 
     document.body.appendChild(renderer.domElement);
+
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
 
     //camera.position.set(300, 300, 300);
     //camera.lookAt(currentScene.currentText.position);
@@ -118,6 +119,43 @@ var processAction = function (action, scene) {
             {
                 break;
             }
+    }
+}
+
+function onDocumentMouseDown(event) {
+    mouse.x = ((event.clientX - renderer.domElement.offsetLeft) / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = - ((event.clientY - renderer.domElement.offsetTop) / renderer.domElement.clientHeight) * 2 + 1;
+
+    // update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // calculate objects intersecting the picking ray
+    var intersects = raycaster.intersectObjects(currentScene.children);
+
+    for (var i = 0; i < intersects.length; i++) {
+
+        //document.getElementById("IntroText").hidden = true;
+        //document.getElementById("ThatIsTheParent").hidden = true;
+        //document.getElementById("ThatIsTheWrongChild").hidden = true;
+        //document.getElementById("ThatIsTheCorrectChild").hidden = true;
+
+
+        //if (intersects[i].object == parent) {
+        //    document.getElementById("ThatIsTheParent").hidden = false;
+        //    //intersects[i].object.material.color.set(0xffffff);
+        //}
+        //else if (intersects[i].object == correctChild) {
+        //    document.getElementById("ThatIsTheCorrectChild").hidden = false;
+        //    //intersects[i].object.material.color.set(0x0000ff);
+        //    gameplaying = false;
+        //}
+        //else {
+        //    //intersects[i].object.material.color.set(0xff0000);
+        //    document.getElementById("ThatIsTheWrongChild").hidden = false;
+        //    gameplaying = false;
+        //}
+
+
     }
 }
 
