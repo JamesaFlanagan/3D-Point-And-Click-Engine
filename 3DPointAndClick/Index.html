@@ -39,8 +39,13 @@
     <!--<script src="Scripts/script.js"></script>-->
     <script src="Scripts/Engine.js"></script>
 
+
+    <div id="DisplayText" style="position: absolute ;color: white; text-align:center; font-size:x-large; font-weight:600;top: 50px;">
+
+    </div>
+
     <script type="text/javascript">
-        startEngine(chapter, "startScreenScene");
+        startEngine(chapter, "gameScene", document.getElementById("DisplayText"));
     </script>
 
 </body>

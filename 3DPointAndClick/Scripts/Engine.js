@@ -2,11 +2,11 @@
 var currentScene = null;
 var renderer = null;
 var camera = null;
-var fontLoader = null;
+var displayTextContainer = null;
 
-var startEngine = function (gameData, startScene) {
+var startEngine = function (gameData, startScene, newDisplayTextContainer) {
 
-    fontLoader = new THREE.FontLoader();
+    displayTextContainer = newDisplayTextContainer;
 
     for (var i = 0; i < gameData.scenes.length; i++) {
 
@@ -17,23 +17,38 @@ var startEngine = function (gameData, startScene) {
         if (newScene.name == startScene) {
             currentScene = newScene;
         }
-    }   
-
-    
+    }
 
     camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 1, 1000);
     camera.position.z = 4;
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setClearColor("#000000");
-    renderer.setSize(window.innerHeight, window.innerHeight);
+    renderer.setSize(window.innerHeight, window.innerHeight);    
+    displayTextContainer.style.width = renderer.getSize().width;
 
     document.body.appendChild(renderer.domElement);
 
-    camera.position.set(300, 300, 300);
-    camera.lookAt(currentScene.currentText.position);
+    //camera.position.set(300, 300, 300);
+    //camera.lookAt(currentScene.currentText.position);
+
+    swapToScene(currentScene);
 
     render();
+}
+
+var swapToScene = function (scene) {
+    currentScene = scene;
+
+    for (var i = 0; i < scene.actionList.length; i++) {
+
+        var action = scene.actionList[i]
+
+        if (action.source == "scene" && action.sourceaction == "SwapTo") {
+            processAction(action, scene);
+        }
+    }
+
 }
 
 var loadScene = function (sceneData) {
@@ -77,26 +92,6 @@ var createCube = function (x, y, z, w, h, d, color, parentColor) {
     return cube;
 }
 
-var createText = function (text, x, y, z, color) {
-
-    var geometry = fontLoader.load('fonts/helvetiker_regular.typeface.json', function (font) {
-
-        var geometry = new THREE.TextGeometry('Hello three.js!', {
-            font: font
-        });
-    });
-
-    
-    var material = new THREE.MeshBasicMaterial({ color: color });
-    var mesh = new THREE.Mesh(geometry, material);
-
-    mesh.position.x = x;
-    mesh.position.y = y;
-    mesh.position.z = z;
-
-    return mesh;
-}
-
 var initialiseScene = function(scene)
 {
     for (var i = 0; i < scene.actionList.length; i++) {
@@ -108,23 +103,15 @@ var initialiseScene = function(scene)
             processAction(action, scene);
         }
     }
-        scene.actionList
 }
 
 var processAction = function (action, scene) {
 
-    //Make this a command pattern later
+    //Make this use command pattern later
     switch (action.targetaction) {
         case "displayText":
             {
-                if (scene.currentText) {
-                    scene.remove(currentText);
-                }
-
-                scene.currentText = createText(action.targetParams[0], 0, 0, 0, '#FFFFFF');
-                scene.add(scene.currentText);
-                scene.objectList.push(scene.currentText);
-                
+                displayTextContainer.innerText = action.targetParams[0];
                 break;
             }
         default:
