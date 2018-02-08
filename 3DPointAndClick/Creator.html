@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>3D Adventure Engine Game Creator</title>
+
+    <!--  Simple reset to delete the margins  -->
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%
+        }
+    </style>
+    <!--  Three.js CDN  -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>-->
+
+    <script src="CDN/three.js"></script>
+    <script src="CDN/Underscore.min.js"></script>
+</head>
+<body>
+
+    <script src="Scripts/Engine.js"></script>
+    <script src="Scripts/GameFileCreator.js"></script>
+
+    <script type="text/javascript">
+        var currentGameFile = {
+            scenes:
+            [
+                {
+                    name: "startScene",
+                    objects: [],
+                    actions: []
+                }
+            ]
+        };
+
+        var reloadGame = function () {
+            document.getElementById('DisplayText').innerText = "";
+            startEngine(currentGameFile, "startScene", document.getElementById("DisplayText"));
+        }
+
+        var AddCube = function () {
+            var object = { name: "parent", type: "square", x: -5, y: 0, w: 4, h: 8, color: "#433F81" };
+            
+            //currentScene.add(createObject(object));
+            currentGameFile.scenes[0].objects.push(object);
+        }
+
+    </script>
+
+
+    <div id="DisplayText" style="position: absolute ;color: white; text-align:center; font-size:x-large; font-weight:600;top: 50px;">
+
+    </div>
+
+
+    <input id="btnReloadGame" type="submit" onclick="reloadGame(); return false;" value="Reload Game"> 
+
+    <input id="btnAddCube" type="submit" onclick="AddCube(); return false;" value="Add Cube" />
+
+    <div id="test"></div>
+
+    <script type="text/javascript">
+        reloadGame();
+        generateCreateObjectParamList(document.getElementById("test"), "square");
+    </script>
+
+</body>
+</html>
