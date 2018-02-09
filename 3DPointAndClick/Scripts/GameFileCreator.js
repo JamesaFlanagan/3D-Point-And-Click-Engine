@@ -1,7 +1,27 @@
 ﻿var createableObjects =
     [
-        { objectType:"square", objectParams:[{ name:"x", type:"number" }, { name:"y", type:"number" }, { name:"w", type:"number" }, { name:"h", type:"number" }, { name:"color", type:"color" }] }
+        { objectType:"square", displayName:"Square", objectParams:[{ name:"x", type:"number" }, { name:"y", type:"number" }, { name:"w", type:"number" }, { name:"h", type:"number" }, { name:"color", type:"color" }] }
     ];
+
+
+
+var setupCreatorScreen = function(div)
+{
+    var createableObjectTypes = document.createElement('select');
+
+    _.forEach(createableObjects, function (value, key, list) {
+
+        var option = new Option();
+        option.value = value.objectType;
+        option.text = value.displayName;
+
+        createableObjectTypes.options.add(option);
+
+    });
+
+    div.appendChild(createableObjectTypes);
+
+}
 
 var generateCreateObjectParamList = function (div, objectType) {
 
