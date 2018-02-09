@@ -44,10 +44,9 @@
         }
 
         var AddCube = function () {
-            var object = { name: "parent", type: "square", x: -5, y: 0, w: 4, h: 8, color: "#433F81" };
             
             //currentScene.add(createObject(object));
-            currentGameFile.scenes[0].objects.push(object);
+            currentGameFile.scenes[0].objects.push(getObjectDataFromParamListDiv(document.getElementById("test"), "square"));
         }
 
     </script>
@@ -66,6 +65,7 @@
 
     <script type="text/javascript">
         reloadGame();
+
         generateCreateObjectParamList(document.getElementById("test"), "square");
     </script>
 
