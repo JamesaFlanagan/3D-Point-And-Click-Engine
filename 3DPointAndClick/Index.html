@@ -20,19 +20,22 @@
 
     <script src="CDN/three.js"></script>
     <script src="CDN/Underscore.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/AdventureEngine.css">
 </head>
 <body>
     <!--  Our code  -->
     <script src="Scripts/GameFile.js"></script>
     <script src="Scripts/Engine.js"></script>
+    
+    <canvas id="Canvas"></canvas>
 
-
-    <div id="DisplayText" style="position: absolute ;color: white; text-align:center; font-size:x-large; font-weight:600;top: 50px;">
+    <div id="DisplayText">
 
     </div>
 
     <script type="text/javascript">
-        startEngine(chapter, "gameScene", document.getElementById("DisplayText"));
+        startEngine(chapter, "gameScene", document.getElementById("Canvas"), document.getElementById("DisplayText"));
     </script>
 
 </body>

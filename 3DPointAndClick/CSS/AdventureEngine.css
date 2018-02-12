@@ -1,0 +1,38 @@
+﻿#DisplayText {
+    position: absolute;
+    color: white;
+    text-align: center;
+    font-size: x-large;
+    font-weight: 600;
+    top: 50px;
+}
+
+.SideBar {
+    width: 134px;
+    height: 700px;
+    float: left;
+}
+
+.SideBar > div
+{
+    width: 134px;
+    margin-bottom: 10px;
+}
+
+.SideBar select
+{
+    width: 100%;
+}
+
+.SideBar input {
+    width: 100%;
+}
+
+.SideBar input {
+    width: 100%;
+}
+
+canvas
+{
+    float:left;
+}

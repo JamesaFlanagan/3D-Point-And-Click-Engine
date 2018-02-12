@@ -1,13 +1,11 @@
-﻿var createableObjects =
-    [
-        { objectType:"square", displayName:"Square", objectParams:[{ name:"x", type:"number" }, { name:"y", type:"number" }, { name:"w", type:"number" }, { name:"h", type:"number" }, { name:"color", type:"color" }] }
-    ];
+﻿
+var reloadGame = function () {
+    document.getElementById('DisplayText').innerText = "";
+    startEngine(currentGameFile, "startScene", document.getElementById("Canvas"), document.getElementById("DisplayText"));
+}
 
-
-
-var setupCreatorScreen = function(div)
-{
-    var createableObjectTypes = document.createElement('select');
+var setupCreatorScreen = function () {
+    var createableObjectTypes = document.getElementById("CreateableTypes");
 
     _.forEach(createableObjects, function (value, key, list) {
 
@@ -18,8 +16,6 @@ var setupCreatorScreen = function(div)
         createableObjectTypes.options.add(option);
 
     });
-
-    div.appendChild(createableObjectTypes);
 
 }
 
@@ -61,7 +57,7 @@ var generateCreateObjectParamList = function (div, objectType) {
         newDiv.appendChild(input);
 
         div.appendChild(newDiv);
-        
+
     });
 
 }
@@ -73,9 +69,9 @@ var getObjectDataFromParamListDiv = function (div, type) {
     object.type = type;
 
     _.forEach(div.children, function (value, key, list) {
-        
+
         object[value.children[0].innerText] = value.children[1].value;
-        
+
     });
 
     return object;

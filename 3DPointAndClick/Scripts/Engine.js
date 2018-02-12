@@ -2,15 +2,16 @@
 
 var sceneList = [];
 var currentScene = null;
-var renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setClearColor("#000000");
+var renderer = null;
 var camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 1, 1000); camera.position.z = 4;
 var displayTextContainer = null;
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
-var startEngine = function (gameData, startScene, newDisplayTextContainer) {
+var startEngine = function (gameData, startScene, canvasObject, newDisplayTextContainer) {
 
     displayTextContainer = newDisplayTextContainer;
+    renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasObject }); renderer.setClearColor("#000000");
 
     _.forEach(gameData.scenes, function (value, key, list) {
 
