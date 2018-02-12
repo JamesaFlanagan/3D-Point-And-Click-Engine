@@ -12,16 +12,16 @@ var startEngine = function (gameData, startScene, newDisplayTextContainer) {
 
     displayTextContainer = newDisplayTextContainer;
 
-    for (var i = 0; i < gameData.scenes.length; i++) {
+    _.forEach(gameData.scenes, function (value, key, list) {
 
-        var newScene = loadScene(gameData.scenes[i]);
+        var newScene = loadScene(value);
 
         initialiseScene(newScene);
 
         if (newScene.name == startScene) {
             currentScene = newScene;
         }
-    }    
+    });
     
     renderer.setSize(window.innerHeight, window.innerHeight);    
     displayTextContainer.style.width = renderer.getSize().width;
@@ -41,14 +41,11 @@ var startEngine = function (gameData, startScene, newDisplayTextContainer) {
 var swapToScene = function (scene) {
     currentScene = scene;
 
-    for (var i = 0; i < scene.actionList.length; i++) {
-
-        var action = scene.actionList[i]
-
+    _.forEach(scene.actionList, function (action, key, list) {
         if (action.source == "scene" && action.sourceaction == "SwapTo") {
             processAction(action, scene);
         }
-    }
+    });
 }
 
 var loadScene = function (sceneData) {
@@ -58,15 +55,12 @@ var loadScene = function (sceneData) {
     scene.actionList = sceneData.actions.slice();
     scene.name = sceneData.name;
 
-    for (var i = 0; i < sceneData.objects.length; i++)
-    {
-        var objData = sceneData.objects[i]
-
-        var obj = createObject(objData);
+    _.forEach(sceneData.objects, function (value, key, list) {
+        var obj = createObject(value);
 
         scene.add(obj);
         scene.objectList.push(obj);
-    }
+    });
 
     sceneList.push(scene);
     return scene;
@@ -99,15 +93,11 @@ var createCube = function (x, y, z, w, h, d, color, parentColor) {
 
 var initialiseScene = function(scene)
 {
-    for (var i = 0; i < scene.actionList.length; i++) {
-
-        var action = scene.actionList[i]
-
-        if (action.source == "scene" && action.sourceaction == "initialise")
-        {
+    _.forEach(scene.actionList, function (action, key, list) {
+        if (action.source == "scene" && action.sourceaction == "initialise") {
             processAction(action, scene);
         }
-    }
+    });
 }
 
 var processAction = function (action, scene) {
@@ -122,13 +112,11 @@ var processAction = function (action, scene) {
         case "changeScene":
             {
                 var targetSceneName = action.targetParams[0];
-                for (var i = 0; i < sceneList.length; ++i) {
-                    var targetScene = sceneList[i];
-
+                _.forEach(sceneList, function (targetScene, key, list) {
                     if (targetScene.name == targetSceneName) {
                         swapToScene(targetScene);
                     }
-                }
+                });
                 break;
             }
         default:
@@ -148,44 +136,15 @@ function onDocumentMouseDown(event) {
     // calculate objects intersecting the picking ray
     var intersects = raycaster.intersectObjects(currentScene.children);
 
-    for (var i = 0; i < intersects.length; i++) {
+    _.forEach(intersects, function (value, key, list) {
+        var item = value.object;
 
-        var item = intersects[i].object;
-        
-        for(var i = 0; i < currentScene.actionList.length; i++) {
-
-            var action = currentScene.actionList[i];
-
+        _.forEach(currentScene.actionList, function (action, key, list) {
             if (action.source == item.name && action.sourceaction == "choose") {
                 processAction(action, currentScene);
             }
-        }
-
-
-
-        //document.getElementById("IntroText").hidden = true;
-        //document.getElementById("ThatIsTheParent").hidden = true;
-        //document.getElementById("ThatIsTheWrongChild").hidden = true;
-        //document.getElementById("ThatIsTheCorrectChild").hidden = true;
-
-
-        //if (intersects[i].object == parent) {
-        //    document.getElementById("ThatIsTheParent").hidden = false;
-        //    //intersects[i].object.material.color.set(0xffffff);
-        //}
-        //else if (intersects[i].object == correctChild) {
-        //    document.getElementById("ThatIsTheCorrectChild").hidden = false;
-        //    //intersects[i].object.material.color.set(0x0000ff);
-        //    gameplaying = false;
-        //}
-        //else {
-        //    //intersects[i].object.material.color.set(0xff0000);
-        //    document.getElementById("ThatIsTheWrongChild").hidden = false;
-        //    gameplaying = false;
-        //}
-
-
-    }
+        });        
+    });    
 }
 
 // Render Loop
