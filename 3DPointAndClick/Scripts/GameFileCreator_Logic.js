@@ -1,11 +1,24 @@
-﻿
+﻿var DisplayText = null;
+var Canvas = null;
+var CreateableTypesList = null;
+var CurrentObjectList = null;
+
+
 var reloadGame = function () {
-    document.getElementById('DisplayText').innerText = "";
-    startEngine(currentGameFile, "startScene", document.getElementById("Canvas"), document.getElementById("DisplayText"));
+    DisplayText.innerText = "";
+    startEngine(currentGameFile, "startScene", Canvas, DisplayText);
 }
 
 var setupCreatorScreen = function () {
-    var createableObjectTypes = document.getElementById("CreateableTypes");
+
+    DisplayText = document.getElementById('DisplayText');
+    Canvas = document.getElementById("Canvas");
+    CreateableTypesList = document.getElementById("CreateableTypes");
+    CurrentObjectList = document.getElementById("CurrentObjectList");
+    
+
+
+    var createableObjectTypes = CreateableTypesList;
 
     _.forEach(createableObjects, function (value, key, list) {
 
@@ -75,4 +88,27 @@ var getObjectDataFromParamListDiv = function (div, type) {
     });
 
     return object;
+}
+
+var refreshUIValues = function () {
+
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name = currentScene.name; });
+
+    while (CurrentObjectList.firstChild) { // TODO Make a standard function
+        CurrentObjectList.removeChild(CurrentObjectList.firstChild);
+    }
+    
+    _.forEach(scene.objects, function (value, index, list) {
+
+        var newDiv = document.createElement('div');
+        newDiv.innerText = value.name; //TODO - will need to give them a default name of object number etc
+
+        CurrentObjectList.appendChild(newDiv);
+    });
+
+    //currentGameFile
+
+    //CurrentObjectList
+
+    //This should populate the list of current objects that exist in the current scene
 }

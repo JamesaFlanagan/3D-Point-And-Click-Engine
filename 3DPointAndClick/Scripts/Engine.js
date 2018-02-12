@@ -26,9 +26,7 @@ var startEngine = function (gameData, startScene, canvasObject, newDisplayTextCo
     
     renderer.setSize(window.innerHeight, window.innerHeight);    
     displayTextContainer.style.width = renderer.getSize().width;
-
-    document.body.appendChild(renderer.domElement);
-
+    
     document.addEventListener('mousedown', onDocumentMouseDown, false);
 
     //camera.position.set(300, 300, 300);

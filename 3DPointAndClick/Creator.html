@@ -26,20 +26,25 @@
 <body>
 
     <script src="Scripts/Engine.js"></script>
-    <script src="Scripts/GameFileCreator.js"></script>
+    <script src="Scripts/GameFileCreator_Data.js"></script>
+    <script src="Scripts/GameFileCreator_Logic.js"></script>
 
     <script type="text/javascript">
-        
+
         var AddNewObject = function () {
-            
+
             //currentScene.add(createObject(object));
-            currentGameFile.scenes[0].objects.push(getObjectDataFromParamListDiv(document.getElementById("test"), "square"));
+//            currentGameFile.scenes[0].objects.push(getObjectDataFromParamListDiv(document.getElementById("test"), "square"));
+
+            currentGameFile.scenes[0].objects.push({ name: "parent", type: "square", x: -5, y: 0, w: 4, h: 8, color: "#433F81" });
+
+            refreshUIValues();
         }
 
     </script>
-    
+
     <div id="leftBar" class="SideBar">
-        
+
         <div>
             <input id="btnReloadGame" type="submit" onclick="reloadGame(); return false;" value="Reload Game">
         </div>
@@ -48,29 +53,32 @@
             <select id="CreateableTypes" />
             <input id="btnAddObject" type="submit" onclick="AddNewObject(); return false;" value="Add Object" />
         </div>
-        
+
     </div>
 
-    <canvas id="Canvas"/>
-    
-    <div id="DisplayText" />
+    <canvas id="Canvas"> </canvas>
+
+    <div id="DisplayText" ></div>
 
     <div id="rightBar" class="SideBar">
+        
         <div id="CurrentObjectList">
 
         </div>
+
         <div id="CurrentObject">
 
         </div>
     </div>
-    
-    <script type="text/javascript">
-        
-        reloadGame();
 
-//        generateCreateObjectParamList(document.getElementById("test"), "square");
+    <script type="text/javascript">
+
 
         setupCreatorScreen();
+        reloadGame();
+
+        //        generateCreateObjectParamList(document.getElementById("test"), "square");
+
     </script>
 
 </body>
