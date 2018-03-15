@@ -16,7 +16,7 @@
                 [
                     { source: "scene", sourceaction: "SwapTo", targetaction: "displayText", targetParams: ["Rectanguloids are a species that look like rectangles.\nThere genetics are very simple and their children are always the same colour as the parent.\Unfortunately, Rectanguloids are colour blind and find it hard to tell their children apart from other children.\nHelp the Rectanguloids be reunited correctly by clicking on their child."] },
                     { source:"parent", sourceaction:"choose", targetaction:"displayText", targetParams:["That is the parent. Click on the child that matches the colour of this Rectanguloid."] },
-                    { source:"child1", sourceaction:"choose", targetaction:"changeScene", targetParams:["winGameScene"] },
+                    { source: "child1", sourceaction: "choose", targetaction: "changeScene", targetParams: ["gameScene2"] },
                     { source:"child2", sourceaction:"choose", targetaction:"changeScene", targetParams:["loseGameScene"] },
                     { source:"child3", sourceaction:"choose", targetaction:"changeScene", targetParams:["loseGameScene"] }
                 ]
@@ -25,7 +25,7 @@
                 name: "winGameScene",
                 objects:[],
                 actions:[
-                    { source: "scene", sourceaction:"SwapTo", targetaction:"displayText", targetParams:["That is the correct child.\nYou have made the family whole again, and they will surely go on to have a happy life."] }
+                    { source: "scene", sourceaction:"SwapTo", targetaction:"displayText", targetParams:["That is the correct child.\nYou have made the families whole again, and they will surely go on to have a happy life."] }
                 ]
             },
             {
@@ -33,6 +33,25 @@
                 objects:[],
                 actions:[
                     { source: "scene", sourceaction:"SwapTo", targetaction:"displayText", targetParams:["That is the wrong child.\nYou have doomed this poor family to raise the wrong child - which will eventually grow to resent it."] }
+                ]
+            },
+            {
+                name: "gameScene2",
+                objects:
+                [
+                    { name: "parent", type: "square", x: -5, y: 0, w: 4, h: 8, color: "#F5FBEF" },
+                    { name: "child1", type: "square", x: 6, y: 3, w: 2, h: 3, color: "#433F81" },
+                    { name: "child2", type: "square", x: 6, y: -1, w: 2, h: 3, color: "#F5FBEF" },
+                    { name: "child3", type: "square", x: 6, y: -5, w: 2, h: 3, color: "#E85D75" }
+                ]
+                ,
+                actions:
+                [
+                    { source: "scene", sourceaction: "SwapTo", targetaction: "displayText", targetParams: ["Here is another parent for you to help. Click on their child to reunite them."] },
+                    { source: "parent", sourceaction: "choose", targetaction: "displayText", targetParams: ["That is the parent. Click on the child that matches the colour of this Rectanguloid."] },
+                    { source: "child1", sourceaction: "choose", targetaction: "changeScene", targetParams: ["loseGameScene"] },
+                    { source: "child2", sourceaction: "choose", targetaction: "changeScene", targetParams: ["winGameScene"] },                    
+                    { source: "child3", sourceaction: "choose", targetaction: "changeScene", targetParams: ["loseGameScene"] }
                 ]
             }
         ]
