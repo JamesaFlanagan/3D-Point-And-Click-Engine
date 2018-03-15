@@ -26,11 +26,9 @@
 
 .SideBar input {
     width: 100%;
+    margin: 0px;
 }
 
-.SideBar input {
-    width: 100%;
-}
 
     .SideBar h3 {
         width: 100%;
@@ -60,4 +58,4 @@ canvas
     /*border: ridge 4px gray;*/
     border-bottom: 1px dashed black;
     cursor: pointer;
-}
+}   

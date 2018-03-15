@@ -1,10 +1,4 @@
-﻿var DisplayText = null;
-var Canvas = null;
-var CreateableTypesList = null;
-var CurrentObjectList = null;
-var CurrentObjectDiv = null;
-
-var currentObjectCount = 0; //TODO - Fix this won't work when a file is loaded in.
+﻿var currentObjectCount = 0; //TODO - Fix this won't work when a file is loaded in.
 //TODO - need to enforce unique names - so find works properly  
 
 var reloadGame = function () {
@@ -12,28 +6,39 @@ var reloadGame = function () {
     startEngine(currentGameFile, "startScene", Canvas, DisplayText);
 }
 
-var setupCreatorScreen = function () {
+var objectUpdate = function (originalObjectName, newObject)
+{
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name = currentScene.name; });
+    var object = _.find(scene.objects, function (value) { return value.name = originalObjectName; });
+    
+    scene.objects = _.filter(scene.objects, function (obj) { return obj.name != originalObjectName; })
+    scene.objects.push(newObject);
+}
 
-    DisplayText = document.getElementById('DisplayText');
-    Canvas = document.getElementById("Canvas");
-    CreateableTypesList = document.getElementById("CreateableTypes");
-    CurrentObjectList = document.getElementById("CurrentObjectList");
-    CurrentObjectDiv = document.getElementById("CurrentObject");   
+var objectCreate = function(objectType)
+{
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name = currentScene.name; });
 
+    var itemName = "item" + currentObjectCount++;
 
-    var createableObjectTypes = CreateableTypesList;
+    var objectToCreate = _.find(createableObjects, function (a) { return a.objectType == objectType; });
 
-    _.forEach(createableObjects, function (value, key, list) {
+    var newObject = {};
+    newObject.name = itemName;
+    newObject.type = objectType;
 
-        var option = new Option();
-        option.value = value.objectType;
-        option.text = value.displayName;
-
-        createableObjectTypes.options.add(option);
-
+    _.each(objectToCreate.objectParams, function (value, key, list) {
+        newObject[value.name] = getDefaultValue(value.type);
     });
 
+    scene.objects.push(newObject);
 }
+
+
+
+
+
+
 
 
 
@@ -81,11 +86,9 @@ var generateCreateObjectParamList = function (div, objectType) {
 
 }
 
-var getObjectDataFromParamListDiv = function (div, type) {
+var getObjectDataFromParamListDiv = function (div) {
 
     var object = {};
-
-    object.type = type;
 
     _.forEach(div.children, function (value, key, list) {
 
@@ -124,6 +127,22 @@ var showEditObjectList = function (itemDiv) {
         CurrentObjectDiv.appendChild(newDiv);
     }
 
+    {
+        var newDiv = document.createElement('div');
+
+        var title = document.createElement('span');
+        title.innerText = "type";
+
+        var input = document.createElement('input');
+        input.type = 'text'
+        input.disabled = true;
+        input.value = object.type;
+
+        newDiv.appendChild(title);
+        newDiv.appendChild(input);
+
+        CurrentObjectDiv.appendChild(newDiv);
+    }
 
     _.each(objectType.objectParams, function (value, key, list) {
 
@@ -143,6 +162,7 @@ var showEditObjectList = function (itemDiv) {
 
     });
 
+    CurrentObjectSaveButton.setAttribute("commandarg", objectName);    
 }
 
 var refreshUIValues = function () {
@@ -152,8 +172,12 @@ var refreshUIValues = function () {
     while (CurrentObjectList.firstChild) { // TODO Make a standard function
         CurrentObjectList.removeChild(CurrentObjectList.firstChild);
     }
+
+    while (CurrentObjectDiv.firstChild) { // TODO Make a standard function
+        CurrentObjectDiv.removeChild(CurrentObjectDiv.firstChild);
+    }
     
-    _.forEach(scene.objects, function (value, index, list) {
+    _.forEach(scene.objects, function (value, index, list) { //Consider Sorting this Alphabetically
 
         var newDiv = document.createElement('div');
         newDiv.innerText = value.name; //TODO - will need to give them a default name of object number etc

@@ -28,16 +28,24 @@
     <script src="Scripts/Engine.js"></script>
     <script src="Scripts/GameFileCreator_Data.js"></script>
     <script src="Scripts/GameFileCreator_Logic.js"></script>
+    <script src="Scripts/GameFileCreator_Display.js"></script>
 
     <script type="text/javascript">
 
         var AddNewObject = function () {
 
-            //currentScene.add(createObject(object));
-//            currentGameFile.scenes[0].objects.push(getObjectDataFromParamListDiv(document.getElementById("test"), "square"));
+            var newType = CreateableTypesList.value;
 
-            currentGameFile.scenes[0].objects.push({ name: "parent", type: "square", x: -5, y: 0, w: 4, h: 8, color: "#433F81" });
+            objectCreate(newType);
+
+            refreshUIValues();
+        }
+
+        var btnUpdateObjectData_Click = function (a, b) {
+
+            var newObject = getObjectDataFromParamListDiv(CurrentObjectDiv);
             
+            objectUpdate(CurrentObjectSaveButton.getAttribute("commandarg"), newObject);
 
             refreshUIValues();
         }
@@ -59,10 +67,10 @@
 
     <canvas id="Canvas"> </canvas>
 
-    <div id="DisplayText" ></div>
+    <div id="DisplayText"></div>
 
     <div id="rightBar" class="SideBar">
-        
+
         <h3>Scene Objects</h3>
         <div id="CurrentObjectList" class="ObjectList">
 
@@ -71,15 +79,12 @@
         <div id="CurrentObject">
 
         </div>
+        <input id="CurrentObjectSaveButton" type="submit" value="Update" commandArg="NA" onclick="btnUpdateObjectData_Click(this); return false;" />
     </div>
 
     <script type="text/javascript">
 
-
         setupCreatorScreen();
-        reloadGame();
-
-        //        generateCreateObjectParamList(document.getElementById("test"), "square");
 
     </script>
 
