@@ -8,16 +8,18 @@ var reloadGame = function () {
 
 var objectUpdate = function (originalObjectName, newObject)
 {
-    var scene = _.find(currentGameFile.scenes, function (value) { return value.name = currentScene.name; });
-    var object = _.find(scene.objects, function (value) { return value.name = originalObjectName; });
-    
-    scene.objects = _.filter(scene.objects, function (obj) { return obj.name != originalObjectName; })
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == currentScene.name; });
+    var object = _.find(scene.objects, function (value) { return value.name == originalObjectName; });
+
+    var listWithoutOldValue = _.filter(scene.objects, function (obj) { return obj.name != originalObjectName; })
+
+    scene.objects = listWithoutOldValue;
     scene.objects.push(newObject);
 }
 
 var objectCreate = function(objectType)
 {
-    var scene = _.find(currentGameFile.scenes, function (value) { return value.name = currentScene.name; });
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == currentScene.name; });
 
     var itemName = "item" + currentObjectCount++;
 
@@ -107,9 +109,9 @@ var showEditObjectList = function (itemDiv) {
 
     var objectName = itemDiv.innerText;
 
-    var scene = _.find(currentGameFile.scenes, function (value) { return value.name = currentScene.name; });
-    var object = _.find(scene.objects, function (value) { return value.name = objectName; });
-    var objectType = _.find(createableObjects, function (value) { return value.objectType = object.type; });
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == currentScene.name; });
+    var object = _.find(scene.objects, function (value) { return value.name == objectName; });
+    var objectType = _.find(createableObjects, function (value) { return value.objectType == object.type; });
     
     {
         var newDiv = document.createElement('div');
@@ -163,33 +165,4 @@ var showEditObjectList = function (itemDiv) {
     });
 
     CurrentObjectSaveButton.setAttribute("commandarg", objectName);    
-}
-
-var refreshUIValues = function () {
-
-    var scene = _.find(currentGameFile.scenes, function (value) { return value.name = currentScene.name; });
-
-    while (CurrentObjectList.firstChild) { // TODO Make a standard function
-        CurrentObjectList.removeChild(CurrentObjectList.firstChild);
-    }
-
-    while (CurrentObjectDiv.firstChild) { // TODO Make a standard function
-        CurrentObjectDiv.removeChild(CurrentObjectDiv.firstChild);
-    }
-    
-    _.forEach(scene.objects, function (value, index, list) { //Consider Sorting this Alphabetically
-
-        var newDiv = document.createElement('div');
-        newDiv.innerText = value.name; //TODO - will need to give them a default name of object number etc
-
-        newDiv.onclick = function () { showEditObjectList(newDiv); };
-
-        CurrentObjectList.appendChild(newDiv);
-    });
-
-    //currentGameFile
-
-    //CurrentObjectList
-
-    //This should populate the list of current objects that exist in the current scene
 }

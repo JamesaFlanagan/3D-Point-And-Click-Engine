@@ -31,3 +31,35 @@ var setupCreatorScreen = function () {
     reloadGame();
 
 }
+
+
+var refreshUIValues = function () {
+
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == currentScene.name; });
+
+    while (CurrentObjectList.firstChild) { // TODO Make a standard function
+        CurrentObjectList.removeChild(CurrentObjectList.firstChild);
+    }
+
+    while (CurrentObjectDiv.firstChild) { // TODO Make a standard function
+        CurrentObjectDiv.removeChild(CurrentObjectDiv.firstChild);
+    }
+
+    _.forEach(scene.objects, function (value, index, list) { //Consider Sorting this Alphabetically
+
+        var newDiv = document.createElement('div');
+        newDiv.innerText = value.name;
+
+        newDiv.onclick = function () { showEditObjectList(newDiv); };
+
+        CurrentObjectList.appendChild(newDiv);
+
+        console.log(value);
+    });
+
+    //currentGameFile
+
+    //CurrentObjectList
+
+    //This should populate the list of current objects that exist in the current scene
+}
