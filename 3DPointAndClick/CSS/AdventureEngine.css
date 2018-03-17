@@ -43,19 +43,18 @@ canvas
     float:left;
 }
 
-.ObjectList 
-{
+.ObjectList, .SceneList {
     /*border: 1px solid black;*/
     height: 150px;
     overflow-y: scroll;
 }
 
-.ObjectList div {
-    width: auto;
-    padding-left: 5px;
-    /*background-color: darkgray;*/
-    /*color: white;*/
-    /*border: ridge 4px gray;*/
-    border-bottom: 1px dashed black;
-    cursor: pointer;
-}   
+    .ObjectList div, .SceneList div{
+        width: auto;
+        padding-left: 5px;
+        /*background-color: darkgray;*/
+        /*color: white;*/
+        /*border: ridge 4px gray;*/
+        border-bottom: 1px dashed black;
+        cursor: pointer;
+    }   

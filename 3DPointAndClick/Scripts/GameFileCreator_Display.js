@@ -30,36 +30,38 @@ var setupCreatorScreen = function () {
 
     reloadGame();
 
+    refreshUIValues();
 }
 
+var refreshList = function (div, list, nameProperty, itemFunction) {
+
+    while (div.firstChild) { // TODO Make a standard function
+        div.removeChild(div.firstChild);
+    }
+
+    _.forEach(list, function (value, index, list) { //Consider Sorting this Alphabetically
+
+        var newDiv = document.createElement('div');
+        newDiv.innerText = value[nameProperty];
+
+        newDiv.onclick = function () { itemFunction(newDiv); };
+
+        div.appendChild(newDiv);
+    });
+}
 
 var refreshUIValues = function () {
 
     var scene = _.find(currentGameFile.scenes, function (value) { return value.name == currentScene.name; });
 
-    while (CurrentObjectList.firstChild) { // TODO Make a standard function
-        CurrentObjectList.removeChild(CurrentObjectList.firstChild);
-    }
-
+    refreshList(SceneList, currentGameFile.scenes, "name", null);
+    refreshList(CurrentObjectList, scene.objects, "name", showEditObjectList);
+    
     while (CurrentObjectDiv.firstChild) { // TODO Make a standard function
         CurrentObjectDiv.removeChild(CurrentObjectDiv.firstChild);
     }
-
-    _.forEach(scene.objects, function (value, index, list) { //Consider Sorting this Alphabetically
-
-        var newDiv = document.createElement('div');
-        newDiv.innerText = value.name;
-
-        newDiv.onclick = function () { showEditObjectList(newDiv); };
-
-        CurrentObjectList.appendChild(newDiv);
-
-        console.log(value);
-    });
-
+    
     //currentGameFile
 
     //CurrentObjectList
-
-    //This should populate the list of current objects that exist in the current scene
 }
