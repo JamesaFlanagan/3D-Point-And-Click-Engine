@@ -4,7 +4,7 @@ var CreateableTypesList = null;
 var CurrentObjectList = null;
 var CurrentObjectDiv = null;
 var CurrentObjectSaveButton = null;
-
+var SceneList = null;
 
 
 var setupCreatorScreen = function () {
@@ -15,7 +15,7 @@ var setupCreatorScreen = function () {
     CurrentObjectList = document.getElementById("CurrentObjectList");
     CurrentObjectDiv = document.getElementById("CurrentObject");
     CurrentObjectSaveButton = document.getElementById("CurrentObjectSaveButton");
-
+    SceneList = document.getElementById("SceneList");
 
     var createableObjectTypes = CreateableTypesList;
 
@@ -43,7 +43,13 @@ var refreshList = function (div, list, nameProperty, itemFunction) {
     _.forEach(list, function (value, index, list) { //Consider Sorting this Alphabetically
 
         var newDiv = document.createElement('div');
-        newDiv.innerText = value[nameProperty];
+        var name = "";
+
+        _.forEach(nameProperty, function (v, i, l) {
+            name += ":" + value[v];
+        });
+
+        newDiv.innerText = name.substring(1);
 
         newDiv.onclick = function () { itemFunction(newDiv); };
 
@@ -55,9 +61,10 @@ var refreshUIValues = function () {
 
     var scene = _.find(currentGameFile.scenes, function (value) { return value.name == SelectedSceneName; });
 
-    refreshList(SceneList, currentGameFile.scenes, "name", null);
-    refreshList(CurrentObjectList, scene.objects, "name", showEditObjectList);
-    
+    refreshList(SceneList, currentGameFile.scenes, ["name"], function () { });
+    refreshList(CurrentObjectList, scene.objects, ["name"], showEditObjectList);
+    refreshList(CurrentActionsList, scene.actions, ["source", "sourceaction", "targetaction"], function () { });
+
     while (CurrentObjectDiv.firstChild) { // TODO Make a standard function
         CurrentObjectDiv.removeChild(CurrentObjectDiv.firstChild);
     }

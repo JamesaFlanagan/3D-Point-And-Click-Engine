@@ -45,5 +45,9 @@ var objectCreate = function(objectType)
 //TODO - Object Delete
 
 var actionCreate = function () {
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == SelectedSceneName; });
+    var object = _.find(scene.objects, function (value) { return value.name == originalObjectName; });
+
+
 
 }
