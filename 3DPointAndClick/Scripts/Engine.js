@@ -41,7 +41,7 @@ var swapToScene = function (scene) {
     currentScene = scene;
 
     _.forEach(scene.actionList, function (action, key, list) {
-        if (action.source == "scene" && action.sourceaction == "SwapTo") {
+        if (action.source == "Scene" && action.sourceaction == "SwapTo") {
             processAction(action, scene);
         }
     });
@@ -93,7 +93,7 @@ var createCube = function (x, y, z, w, h, d, color, parentColor) {
 var initialiseScene = function(scene)
 {
     _.forEach(scene.actionList, function (action, key, list) {
-        if (action.source == "scene" && action.sourceaction == "initialise") {
+        if (action.source == "Scene" && action.sourceaction == "initialise") {
             processAction(action, scene);
         }
     });
