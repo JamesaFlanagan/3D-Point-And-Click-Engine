@@ -6,6 +6,7 @@ var CurrentObjectDiv = null;
 var CurrentObjectSaveButton = null;
 
 
+
 var setupCreatorScreen = function () {
 
     DisplayText = document.getElementById('DisplayText');
@@ -52,7 +53,7 @@ var refreshList = function (div, list, nameProperty, itemFunction) {
 
 var refreshUIValues = function () {
 
-    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == currentScene.name; });
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == SelectedSceneName; });
 
     refreshList(SceneList, currentGameFile.scenes, "name", null);
     refreshList(CurrentObjectList, scene.objects, "name", showEditObjectList);
@@ -75,7 +76,7 @@ var showEditObjectList = function (itemDiv) {
 
     var objectName = itemDiv.innerText;
 
-    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == currentScene.name; });
+    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == SelectedSceneName; });
     var object = _.find(scene.objects, function (value) { return value.name == objectName; });
     var objectType = _.find(createableObjects, function (value) { return value.objectType == object.type; });
 
