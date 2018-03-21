@@ -18,7 +18,7 @@ var createableSourceActions =
     [
         { sourceActionType: "choose", displayName: "Choose" },
         { sourceActionType: "SwapTo", displayName: "Swap To Scene" }
-    ]; //?? this is an issue as this is a scene and a object actions together
+    ];
 
 var createableTargetActions =
     [
