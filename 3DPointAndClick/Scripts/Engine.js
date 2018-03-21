@@ -1,6 +1,7 @@
 ﻿//TODO - Make this an Engine object where these things can be set and adjusted etc.
 
 var sceneList = [];
+
 var currentScene = null;
 var renderer = null;
 var camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 1, 1000); camera.position.z = 4;
@@ -8,10 +9,15 @@ var displayTextContainer = null;
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
+
+var currentActionList = null; // refactor later
+
 var startEngine = function (gameData, startScene, canvasObject, newDisplayTextContainer) {
 
     displayTextContainer = newDisplayTextContainer;
     renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasObject }); renderer.setClearColor("#000000");
+
+    currentActionList = gameData.actions;
 
     _.forEach(gameData.scenes, function (value, key, list) {
 
@@ -40,8 +46,8 @@ var startEngine = function (gameData, startScene, canvasObject, newDisplayTextCo
 var swapToScene = function (scene) {
     currentScene = scene;
 
-    _.forEach(scene.actionList, function (action, key, list) {
-        if (action.source == "Scene" && action.sourceaction == "SwapTo") {
+    _.forEach(currentActionList, function (action, key, list) {
+        if (action.source == scene.name && action.sourceaction == "SwapTo") {
             processAction(action, scene);
         }
     });
@@ -51,7 +57,6 @@ var loadScene = function (sceneData) {
 
     var scene = new THREE.Scene();
     scene.objectList = [];
-    scene.actionList = sceneData.actions.slice();
     scene.name = sceneData.name;
 
     _.forEach(sceneData.objects, function (value, key, list) {
@@ -92,7 +97,7 @@ var createCube = function (x, y, z, w, h, d, color, parentColor) {
 
 var initialiseScene = function(scene)
 {
-    _.forEach(scene.actionList, function (action, key, list) {
+    _.forEach(currentActionList, function (action, key, list) {
         if (action.source == "Scene" && action.sourceaction == "initialise") {
             processAction(action, scene);
         }
@@ -138,7 +143,7 @@ function onDocumentMouseDown(event) {
     _.forEach(intersects, function (value, key, list) {
         var item = value.object;
 
-        _.forEach(currentScene.actionList, function (action, key, list) {
+        _.forEach(currentActionList, function (action, key, list) {
             if (action.source == item.name && action.sourceaction == "choose") {
                 processAction(action, currentScene);
             }
