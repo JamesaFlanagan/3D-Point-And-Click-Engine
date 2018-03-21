@@ -1,6 +1,8 @@
 ﻿var DisplayText = null;
 var Canvas = null;
 var CreateableTypesList = null;
+var CreateableActionTypesList = null;
+
 var CurrentObjectList = null;
 var CurrentObjectDiv = null;
 var CurrentObjectSaveButton = null;
@@ -12,6 +14,8 @@ var setupCreatorScreen = function () {
     DisplayText = document.getElementById('DisplayText');
     Canvas = document.getElementById("Canvas");
     CreateableTypesList = document.getElementById("CreateableTypes");
+    CreateableActionTypesList = document.getElementById("CreateableActionTypes");
+
     CurrentObjectList = document.getElementById("CurrentObjectList");
     CurrentObjectDiv = document.getElementById("CurrentObject");
     CurrentObjectSaveButton = document.getElementById("CurrentObjectSaveButton");
@@ -26,6 +30,16 @@ var setupCreatorScreen = function () {
         option.text = value.displayName;
 
         createableObjectTypes.options.add(option);
+
+    });
+
+    _.forEach(createableTargetActions, function (value, key, list) {
+
+        var option = new Option();
+        option.value = value.targetActionType;
+        option.text = value.displayName;
+
+        CreateableActionTypesList.options.add(option);
 
     });
 
@@ -63,7 +77,7 @@ var refreshUIValues = function () {
 
     refreshList(SceneList, currentGameFile.scenes, ["name"], function () { });
     refreshList(CurrentObjectList, scene.objects, ["name"], showEditObjectList);
-    refreshList(CurrentActionsList, scene.actions, ["source", "sourceaction", "targetaction"], function () { });
+    refreshList(CurrentActionsList, currentGameFile.actions, ["source", "sourceaction", "targetaction"], function () { });
 
     while (CurrentObjectDiv.firstChild) { // TODO Make a standard function
         CurrentObjectDiv.removeChild(CurrentObjectDiv.firstChild);

@@ -3,10 +3,10 @@
     [
         {
             name: "startScene",
-            objects: [],
-            actions: []
+            objects: []
         }
-    ]
+        ]
+    , actions: []
 };
 
 var createableObjects =
@@ -22,13 +22,16 @@ var createableSourceActions =
 
 var createableTargetActions =
     [
-        { targetActionType: "choose", displayName: "Choose" }
+        { targetActionType: "displayText", displayName: "Display Text", actionParams: [{name:"Text", type:"Text"}] },
+        { targetActionType: "changeScene", displayName: "Change Scene", actionParams: [{ name: "Target Scene", type: "Scene" }] }
     ];
 
 var getDefaultValue = function (type) {
     switch (type) {
         case "number": return 0;
         case "color": return '#FFFFFF';
+        case "text": return ''; 
+        case "scene": return 'startScene'; //TODO - consider changing
         default: return null;
     }
 }

@@ -42,12 +42,21 @@ var objectCreate = function(objectType)
     return itemName;
 }
 
-//TODO - Object Delete
+var actionCreate = function (actionType) {
+   // var scene = _.find(currentGameFile.actions, function (value) { return value.name == SelectedSceneName; });
+    
+    var actionToCreate = _.find(createableTargetActions, function (a) { return a.targetActionType == actionType; });
 
-var actionCreate = function () {
-    var scene = _.find(currentGameFile.scenes, function (value) { return value.name == SelectedSceneName; });
-    var object = _.find(scene.objects, function (value) { return value.name == originalObjectName; });
+    var newAction = {};
+    newAction.targetaction = actionToCreate.displayName;
+    newAction.source = currentScene.name;
+    newAction.sourceaction = 'SwapTo';
 
+    _.each(actionToCreate.actionParams, function (value, key, list) {
+        newAction[value.name] = getDefaultValue(value.type);
+    });
 
-
+    currentGameFile.actions.push(newAction);
 }
+
+//TODO - Object Delete

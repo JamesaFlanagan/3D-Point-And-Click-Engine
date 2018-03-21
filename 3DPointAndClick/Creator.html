@@ -41,6 +41,15 @@
             refreshUIValues();
         }
 
+        var AddNewAction = function () {
+
+            var newType = CreateableActionTypesList.value;
+
+            actionCreate(newType);
+
+            refreshUIValues();
+        }
+
         var btnUpdateObjectData_Click = function (a, b) {
 
             var newObject = getObjectDataFromParamListDiv(CurrentObjectDiv);
@@ -76,6 +85,11 @@
         <h3>Actions</h3>
         <div id="CurrentActionsList" class="ActionList">
 
+        </div>
+
+        <div>
+            <select id="CreateableActionTypes" />
+            <input id="btnAddAction" type="submit" onclick="AddNewAction(); return false;" value="Add Action" />
         </div>
 
     </div>
